@@ -1,7 +1,9 @@
 # 14 Jenkins 声明式与脚本式语法
 
 # Jenkins 声明式与脚本式语法
+
 ## 1. 声明式Pipeline
+
 声明式Pipleine是最近添加到Jenkins流水线的，它在流水线子系统之上提供了一种更简单，更有主见的语法。
 所有的声明式Pipeline都必须包含一个   `pipeline`块中，比如：
 ```groovy
@@ -14,7 +16,9 @@ pipeline {
 - 流水线顶层必须是一个块，特别是pipelin{}。
 - 不需要分号作为分割符，是按照行分割的。
 - 语句块只能由阶段、指令、步骤、赋值语句组成。例如: input被视为input()。
+
 ### 1.1 agent(代理)
+
 agent 指定了流水线的执行节点。
 参数：
 
@@ -27,7 +31,9 @@ agent 指定了流水线的执行节点。
 agent { node { label 'labelname' }}
 aget { label ' labelname '}
 ```
+
 ### 1.2 post
+
 定义一个或多个steps ，这些阶段根据流水线或阶段的完成情况而 运行(取决于流水线中`post`部分的位置). 
 post 支持以下 post-condition 块中的其中之一: always, changed, failure, success, 
 unstable, 和 aborted。这些条件块允许在 post 部分的步骤的执行取决于流水线或阶段的完成状态。
