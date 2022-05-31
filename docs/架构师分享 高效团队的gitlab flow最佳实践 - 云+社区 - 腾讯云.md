@@ -4,12 +4,6 @@
 
 当前 git 是大部分开发团队的首选版本管理工具，一个好的流程规范可以让大家有效地合作，像流水线一样有条不紊地进行团队协作。
 
-业界包含三种 flow：
-
-- Git flow
-- Github flow
-- Gitlab flow
-
 下面我们先来分析，然后再看我们团队基于 gitlab flow 的最佳实践。
 
 # 从git flow到gitlab flow
