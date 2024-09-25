@@ -6,7 +6,7 @@ theme:
   palette:
     primary: green
   language: zh
-repo_url: https://github.com/jiaojiao314/jiao_web
+repo_url: https://github.com/jiaojiao314
 markdown_extensions:
   - toc:
       permalink: true
