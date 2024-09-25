@@ -1,0 +1,503 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../%E4%BD%BF%E7%94%A8%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E9%98%B2%E7%81%AB%E5%A2%99/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.37">
+    
+    
+      
+        <title>架构师分享 高效团队的gitlab flow最佳实践 云+社区 腾讯云 - jiao web home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#git-flowgitlab-flow" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="jiao web home" class="md-header__button md-logo" aria-label="jiao web home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            jiao web home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              架构师分享 高效团队的gitlab flow最佳实践   云+社区   腾讯云
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jiaojiao314" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="m503.5 204.6-.7-1.8-69.7-181.78c-1.4-3.57-3.9-6.59-7.2-8.64-2.4-1.55-5.1-2.515-8-2.81s-5.7.083-8.4 1.11c-2.7 1.02-5.1 2.66-7.1 4.78-1.9 2.12-3.3 4.67-4.1 7.44l-47 144H160.8l-47.1-144c-.8-2.77-2.2-5.31-4.1-7.43-2-2.12-4.4-3.75-7.1-4.77a18.1 18.1 0 0 0-8.38-1.113 18.4 18.4 0 0 0-8.04 2.793 18.1 18.1 0 0 0-7.16 8.64L9.267 202.8l-.724 1.8a129.57 129.57 0 0 0-3.52 82c7.747 26.9 24.047 50.7 46.447 67.6l.27.2.59.4 105.97 79.5 52.6 39.7 32 24.2c3.7 1.9 8.3 4.3 13 4.3s9.3-2.4 13-4.3l32-24.2 52.6-39.7 106.7-79.9.3-.3c22.4-16.9 38.7-40.6 45.6-67.5 8.6-27 7.4-55.8-2.6-82"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="jiao web home" class="md-nav__button md-logo" aria-label="jiao web home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    jiao web home
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jiaojiao314" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="m503.5 204.6-.7-1.8-69.7-181.78c-1.4-3.57-3.9-6.59-7.2-8.64-2.4-1.55-5.1-2.515-8-2.81s-5.7.083-8.4 1.11c-2.7 1.02-5.1 2.66-7.1 4.78-1.9 2.12-3.3 4.67-4.1 7.44l-47 144H160.8l-47.1-144c-.8-2.77-2.2-5.31-4.1-7.43-2-2.12-4.4-3.75-7.1-4.77a18.1 18.1 0 0 0-8.38-1.113 18.4 18.4 0 0 0-8.04 2.793 18.1 18.1 0 0 0-7.16 8.64L9.267 202.8l-.724 1.8a129.57 129.57 0 0 0-3.52 82c7.747 26.9 24.047 50.7 46.447 67.6l.27.2.59.4 105.97 79.5 52.6 39.7 32 24.2c3.7 1.9 8.3 4.3 13 4.3s9.3-2.4 13-4.3l32-24.2 52.6-39.7 106.7-79.9.3-.3c22.4-16.9 38.7-40.6 45.6-67.5 8.6-27 7.4-55.8-2.6-82"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    本站简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../redis%20%E5%AE%89%E8%A3%85%20%EF%BC%88%E4%B8%89%E4%B8%BB%E4%B8%89%E4%BB%8E%EF%BC%89docker.compos%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    redis 安装 （三主三从）docker.compos方式安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BD%BF%E7%94%A8%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E9%98%B2%E7%81%AB%E5%A2%99/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    使用云服务器时快速部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    架构师分享 高效团队的gitlab flow最佳实践   云+社区   腾讯云
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<p>参考链接
+<a href="https://cloud.tencent.com/developer/article/1792828?from=article.detail.1689274">https://cloud.tencent.com/developer/article/1792828?from=article.detail.1689274</a></p>
+<p>当前 git 是大部分开发团队的首选版本管理工具，一个好的流程规范可以让大家有效地合作，像流水线一样有条不紊地进行团队协作。</p>
+<p>下面我们先来分析，然后再看我们团队基于 gitlab flow 的最佳实践。</p>
+<h1 id="git-flowgitlab-flow">从git flow到gitlab flow<a class="headerlink" href="#git-flowgitlab-flow" title="Permanent link">&para;</a></h1>
+<h1 id="git-flow">git flow<a class="headerlink" href="#git-flow" title="Permanent link">&para;</a></h1>
+<p>先说 git flow，大概是这样的。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627628992106-2ee1a870-6302-4f72-add1-f76fa0b83d02.png#height=700&amp;id=pRwTs&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=700&amp;originWidth=528&amp;originalType=binary&amp;ratio=1&amp;size=252882&amp;status=done&amp;style=none&amp;width=528" /></p>
+<p>然后，我们老的 git 规范是参考 git flow 实现的。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627628995497-726a3ce3-5774-41af-99b6-616635575b44.png#height=616&amp;id=vCug9&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=616&amp;originWidth=720&amp;originalType=binary&amp;ratio=1&amp;size=117954&amp;status=done&amp;style=none&amp;width=720" /></p>
+<p>综合考虑了开发、测试、新功能开发、临时需求、热修复，理想很丰满，现实很骨干，这一套运行起来实在是太复杂了。那么如何精简流程呢？</p>
+<p>我们来看业界的做法，首先是 github flow。</p>
+<p>Github flow 是 Git flow 的简化版，专门配合” 持续发布”。它是 Github.com 使用的工作流程。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629004795-945c6446-fe15-4dd9-a9b5-21832f28f7f0.png#height=467&amp;id=tPj1f&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=467&amp;originWidth=380&amp;originalType=binary&amp;ratio=1&amp;size=15758&amp;status=done&amp;style=none&amp;width=380" /></p>
+<p>整个流程：</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629012813-b2732e73-2922-4afe-bfe4-f178ca70ce14.png#height=138&amp;id=O4fOy&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=138&amp;originWidth=750&amp;originalType=binary&amp;ratio=1&amp;size=22151&amp;status=done&amp;style=none&amp;width=750" /></p>
+<ul>
+<li>第一步：根据需求，从 master 拉出新分支，不区分功能分支或补丁分支。</li>
+<li>第二步：新分支开发完成后，或者需要讨论的时候，就向 master 发起一个 pull request（简称 PR）。</li>
+<li>第三步：Pull Request 既是一个通知，让别人注意到你的请求，又是一种对话机制，大家一起评审和讨论你的代码。对话过程中，你还可以不断提交代码。</li>
+<li>第四步：你的 Pull Request 被接受，合并进 master，重新部署后，原来你拉出来的那个分支就被删除。（先部署再合并也可。）</li>
+</ul>
+<p>github flow 这种方式，要保证高质量，对于贡献者的素质要求很高，换句话说，如果代码贡献者素质不那么高，质量就无法得到保证。</p>
+<blockquote>
+<p>github flow 这一套对于库、框架、工具这样并非最终应用的产品来说，没问题，但是，如果如果一个产品是 “最终应用”，github flow 可能就不合适了。</p>
+</blockquote>
+<h1 id="gitlab-flow">gitlab flow<a class="headerlink" href="#gitlab-flow" title="Permanent link">&para;</a></h1>
+<p>Gitlab flow 是 Git flow 与 Github flow 的综合。它吸取了两者的优点，既有适应不同开发环境的弹性，又有单一主分支的简单和便利。它是 Gitlab.com 推荐的做法。</p>
+<p>Gitlab flow 的最大原则叫做” 上游优先”（upsteam first），即只存在一个主分支 master，它是所有其他分支的” 上游”。只有上游分支采纳的代码变化，才能应用到其他分支。</p>
+<p>对于” 持续发布” 的项目，它建议在 master 分支以外，再建立不同的环境分支。比如，” 开发环境” 的分支是 master，” 预发环境” 的分支是 pre-production，” 生产环境” 的分支是 production。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629025086-fc449294-8aa9-45e6-93e4-933ca120d3c3.png#height=618&amp;id=r4AXC&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=618&amp;originWidth=560&amp;originalType=binary&amp;ratio=1&amp;size=32895&amp;status=done&amp;style=none&amp;width=560" /></p>
+<p>只有紧急情况，才允许跳过上游，直接合并到下游分支。</p>
+<p>对于” 版本发布” 的项目，建议的做法是每一个稳定版本，都要从 master 分支拉出一个分支，比如 2-3-stable、2-4-stable 等等。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629033138-82f7f507-2394-45ab-9b3e-762b2b39e6cd.png#height=719&amp;id=u0KCy&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=719&amp;originWidth=550&amp;originalType=binary&amp;ratio=1&amp;size=33664&amp;status=done&amp;style=none&amp;width=550" /></p>
+<p>gitlab flow 如何处理 hotfix？git flow 之所以这么复杂，一大半原因就是把 hotfix 考虑得太周全了。hotfix 的意思是，当代码部署到产品环境之后发现的问题，需要火速 fix。gitlab flow 可以基于后续分支，修改后上线。</p>
+<h1 id="git">团队git规范<a class="headerlink" href="#git" title="Permanent link">&para;</a></h1>
+<p>综合上面的介绍，我们决定采用 gitlab flow，按照版本发布的模式实施，具体来说：</p>
+<ol>
+<li>新的迭代开始，所有开发人员从主干 master 拉个人分支开发特性, 分支命名规范 feature-name</li>
+<li>开发完成后，在迭代结束前，合入 master 分支</li>
+<li>master 分支合并后，自动 cicd 到 dev 环境</li>
+<li>开发自测通过后，从 master 拉取要发布的分支，release-$version，将这个分支部署到测试环境进行测试</li>
+<li>测出的 bug，通过从 release-versio 拉出分支进行修复，修复完成后，再合入 release−versio</li>
+<li>正式发布版本，如果上线后，又有 bug，根据 5 的方式处理</li>
+<li>等发布版本稳定后，将 release-$versio 反合入主干</li>
+</ol>
+<h1 id="_1">最佳实践<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h1 id="feature">开发feature功能<a class="headerlink" href="#feature" title="Permanent link">&para;</a></h1>
+<p>新建分支，比如 feat-test</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629043671-eaa9af4a-88e7-410d-a38e-027922420bcb.png#height=244&amp;id=KzF0J&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=244&amp;originWidth=471&amp;originalType=binary&amp;ratio=1&amp;size=13795&amp;status=done&amp;style=none&amp;width=471" /></p>
+<h1 id="mr">提交MR<a class="headerlink" href="#mr" title="Permanent link">&para;</a></h1>
+<p>开发代码，增加新功能，提交：</p>
+<pre><code>@GetMapping(path \= &quot;/test&quot;, produces \= &quot;application/json&quot;)
+    @ResponseBody
+    public Map&lt;String, Object\&gt; test() {
+        return singletonMap(&quot;test&quot;, &quot;test&quot;);
+    }
+</code></pre>
+<pre><code>git commit \-m &quot;feat: add test code&quot;
+git push origin feat\-test
+</code></pre>
+<p>提交代码后，可以提交 mr 到 master，申请合并代码</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629052090-e4b32b9f-5bc3-4e13-af03-4761c30fc982.png#height=765&amp;id=S56Rv&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=765&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;size=90829&amp;status=done&amp;style=none&amp;width=1080" />
+Note：</p>
+<ul>
+<li>这里可以增加自动代码审查,</li>
+</ul>
+<h1 id="_2">合并代码<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h1>
+<p>研发组长，打开 mr，review 代码，可以添加建议：</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629066986-9f75072b-2914-452e-88df-5661ac0cf2c2.png#height=587&amp;id=bXG5o&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=587&amp;originWidth=1080&amp;originalType=binary&amp;ratio=1&amp;size=125483&amp;status=done&amp;style=none&amp;width=1080" /></p>
+<p>开发同学根据建议修复代码，或者线下修改后 commit 代码。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629073482-2ac74ab0-31e7-477b-b26b-e8b09e5cd717.png#height=473&amp;id=cSznN&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=473&amp;originWidth=1014&amp;originalType=binary&amp;ratio=1&amp;size=52650&amp;status=done&amp;style=none&amp;width=1014" /></p>
+<p>研发组长确认没有问题后，可以合并到 master。</p>
+<p><img alt="image.png" src="https://cdn.nlark.com/yuque/0/2021/png/671316/1627629079332-82f6e411-c278-4c1c-8d4e-50868be7bade.png#height=440&amp;id=hyMOB&amp;margin=%5Bobject%20Object%5D&amp;name=image.png&amp;originHeight=440&amp;originWidth=958&amp;originalType=binary&amp;ratio=1&amp;size=31256&amp;status=done&amp;style=none&amp;width=958" /></p>
+<p>合并完成，可以删除 feat 分支。</p>
+<p>新功能开发好，可以进行提测。</p>
+<h1 id="_3">发布版本<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h1>
+<h1 id="_4">语义化版本号<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h1>
+<p>版本格式：主版本号. 次版本号. 修订号，版本号递增规则如下：</p>
+<p>主版本号：当你做了不兼容的 API 修改， 次版本号：当你做了向下兼容的功能性新增， 修订号：当你做了向下兼容的问题修正。先行版本号及版本编译元数据可以加到 “主版本号. 次版本号. 修订号” 的后面，作为延伸。</p>
+<p>主版本号为 0，代表还未发布正式版本。</p>
+<h1 id="_5">测试发布<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h1>
+<p>master 分支，自动部署到开发环境（dev）</p>
+<p>功能开发完成，并自测通过后，代码合并到待发布版本，</p>
+<p>分支规则：</p>
+<pre><code>release-version
+</code></pre>
+<p>版本规则</p>
+<pre><code>主版本号.次版本号
+</code></pre>
+<p>构建时，自动增加修订号：</p>
+<pre><code>主版本号.次版本号.修订号
+</code></pre>
+<p>从最新的 master 新拉一个分支 release-$version，比如 release-0.1</p>
+<pre><code>git checkout -b release-0.1
+</code></pre>
+<p>release-version 会自动构建，版本号为 version.$buildNumber</p>
+<p>设定 release-$version 分支为保护分支，不允许直接推送，只能通过 merge 不允许直接提交代码，接受 MR。</p>
+<h1 id="bug">bug修复<a class="headerlink" href="#bug" title="Permanent link">&para;</a></h1>
+<p>需要修改 bug 时，从 release-version 新拉分支，修改完成后再合并到 release−version 分支.</p>
+<ul>
+<li>Q: 从 release-$version 拉的分支，如何测试？</li>
+<li>A: 这个节点定义为 bug 修复节点，建议开发同学优先本地测试验证，严重通过再合并到 release 分支。</li>
+<li>Q: release-$version 太多怎么办？</li>
+<li>A: 可以保留最近的 10 个版本。历史的打 tag 后，删除分支。
+<a href="https://cloud.tencent.com/developer/article/1792828?from=article.detail.1689274">https://cloud.tencent.com/developer/article/1792828?from=article.detail.1689274</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d6f25eb3.min.js"></script>
+      
+    
+  </body>
+</html>

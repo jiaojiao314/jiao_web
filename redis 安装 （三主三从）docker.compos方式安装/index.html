@@ -1,0 +1,688 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../%E4%BD%BF%E7%94%A8%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E9%98%B2%E7%81%AB%E5%A2%99/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.37">
+    
+    
+      
+        <title>redis 安装 （三主三从）docker.compos方式安装 - jiao web home</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#redis-dockercompos" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="jiao web home" class="md-header__button md-logo" aria-label="jiao web home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            jiao web home
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              redis 安装 （三主三从）docker.compos方式安装
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jiaojiao314" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="m503.5 204.6-.7-1.8-69.7-181.78c-1.4-3.57-3.9-6.59-7.2-8.64-2.4-1.55-5.1-2.515-8-2.81s-5.7.083-8.4 1.11c-2.7 1.02-5.1 2.66-7.1 4.78-1.9 2.12-3.3 4.67-4.1 7.44l-47 144H160.8l-47.1-144c-.8-2.77-2.2-5.31-4.1-7.43-2-2.12-4.4-3.75-7.1-4.77a18.1 18.1 0 0 0-8.38-1.113 18.4 18.4 0 0 0-8.04 2.793 18.1 18.1 0 0 0-7.16 8.64L9.267 202.8l-.724 1.8a129.57 129.57 0 0 0-3.52 82c7.747 26.9 24.047 50.7 46.447 67.6l.27.2.59.4 105.97 79.5 52.6 39.7 32 24.2c3.7 1.9 8.3 4.3 13 4.3s9.3-2.4 13-4.3l32-24.2 52.6-39.7 106.7-79.9.3-.3c22.4-16.9 38.7-40.6 45.6-67.5 8.6-27 7.4-55.8-2.6-82"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="jiao web home" class="md-nav__button md-logo" aria-label="jiao web home" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    jiao web home
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jiaojiao314" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="m503.5 204.6-.7-1.8-69.7-181.78c-1.4-3.57-3.9-6.59-7.2-8.64-2.4-1.55-5.1-2.515-8-2.81s-5.7.083-8.4 1.11c-2.7 1.02-5.1 2.66-7.1 4.78-1.9 2.12-3.3 4.67-4.1 7.44l-47 144H160.8l-47.1-144c-.8-2.77-2.2-5.31-4.1-7.43-2-2.12-4.4-3.75-7.1-4.77a18.1 18.1 0 0 0-8.38-1.113 18.4 18.4 0 0 0-8.04 2.793 18.1 18.1 0 0 0-7.16 8.64L9.267 202.8l-.724 1.8a129.57 129.57 0 0 0-3.52 82c7.747 26.9 24.047 50.7 46.447 67.6l.27.2.59.4 105.97 79.5 52.6 39.7 32 24.2c3.7 1.9 8.3 4.3 13 4.3s9.3-2.4 13-4.3l32-24.2 52.6-39.7 106.7-79.9.3-.3c22.4-16.9 38.7-40.6 45.6-67.5 8.6-27 7.4-55.8-2.6-82"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    本站简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    redis 安装 （三主三从）docker.compos方式安装
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    redis 安装 （三主三从）docker.compos方式安装
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.创建数据目录
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.创建数据目录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 导入镜像
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2docker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.创建一个docker-compose.yml文件，内容如下：
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.创建文件之后，启动服务
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4redis-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.redis-cluster集群配置
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E4%BD%BF%E7%94%A8%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2%E9%98%B2%E7%81%AB%E5%A2%99/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    使用云服务器时快速部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%9E%B6%E6%9E%84%E5%B8%88%E5%88%86%E4%BA%AB%20%E9%AB%98%E6%95%88%E5%9B%A2%E9%98%9F%E7%9A%84gitlab%20flow%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%20-%20%E4%BA%91%2B%E7%A4%BE%E5%8C%BA%20-%20%E8%85%BE%E8%AE%AF%E4%BA%91/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    架构师分享 高效团队的gitlab flow最佳实践   云+社区   腾讯云
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.创建数据目录
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.创建数据目录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 导入镜像
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2docker-composeyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.创建一个docker-compose.yml文件，内容如下：
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.创建文件之后，启动服务
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4redis-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.redis-cluster集群配置
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="redis-dockercompos">redis 安装 （三主三从）docker.compos方式安装<a class="headerlink" href="#redis-dockercompos" title="Permanent link">&para;</a></h1>
+<p>参考链接：<a href="https://link.zhihu.com/?target=https%3A//www.jianshu.com/p/b7dea62bcd8b">https://www.jianshu.com/p/b7dea62bcd8b</a></p>
+<p>参考镜像：<a href="https://link.zhihu.com/?target=https%3A//github.com/publicisworldwide/docker-stacks/tree/master/oracle-linux/environments/storage/redis-cluster">https://github.com/publicisworldwide/docker-stacks/tree/master/oracle-linux/environments/storage/redis-cluster</a></p>
+<h2 id="1">1.创建数据目录<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<pre><code>[root@localhost redis]# pwd
+/data/redis
+[root@localhost redis]# mkdir 700{1..6}/data  ##这个目录和下边yml文件的volumes对应
+[root@localhost redis]# ls 
+7001  7002  7003  7004  7005  7006  docker-compose.yml
+</code></pre>
+<h3 id="11">1.1 导入镜像<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p><a href="https://www.yuque.com/attachments/yuque/0/2020/tar/671316/1591261142509-2cbff7a8-bf0e-4c79-bb08-647ad1e6252e.tar">📎redis-cluster.tar</a></p>
+<p>docker load &lt; redis-cluster.tar</p>
+<h2 id="2docker-composeyml">2.创建一个docker-compose.yml文件，内容如下：<a class="headerlink" href="#2docker-composeyml" title="Permanent link">&para;</a></h2>
+<pre><code>version: '3'
+
+services:
+ redis1:
+  image: publicisworldwide/redis-cluster
+  network_mode: host
+  restart: always
+  volumes:
+   - /data/redis/7001/data:/data
+  environment:
+   - REDIS_PORT=7001
+
+ redis2:
+  image: publicisworldwide/redis-cluster
+  network_mode: host
+  restart: always
+  volumes:
+   - /data/redis/7002/data:/data
+  environment:
+   - REDIS_PORT=7002
+
+ redis3:
+  image: publicisworldwide/redis-cluster
+  network_mode: host
+  restart: always
+  volumes:
+   - /data/redis/7003/data:/data
+  environment:
+   - REDIS_PORT=7003
+
+ redis4:
+  image: publicisworldwide/redis-cluster
+  network_mode: host
+  restart: always
+  volumes:
+   - /data/redis/7004/data:/data
+  environment:
+   - REDIS_PORT=7004
+
+ redis5:
+  image: publicisworldwide/redis-cluster
+  network_mode: host
+  restart: always
+  volumes:
+   - /data/redis/7005/data:/data
+  environment:
+   - REDIS_PORT=7005
+
+ redis6:
+  image: publicisworldwide/redis-cluster
+  network_mode: host
+  restart: always
+  volumes:
+   - /data/redis/7006/data:/data
+  environment:
+   - REDIS_PORT=7006
+</code></pre>
+<p>这里用的别人一个现成的镜像 publicisworldwide/redis-cluster ，自己制作也可以，后续会发布制作过程，不过不建议自己做，有什么需要更改的可以在现有的镜像基础上进行更改之后commit。镜像可以自己下载，也可以等启动服务的时候他自动下载。</p>
+<p>这里用的是host网络模式，redis挂载到之前创建的目录下。</p>
+<p>如果不想使用主机模式可以文章开头的链接，具体我这里就不写了，自己看。至于docker-compose的安装网上一大堆文章，这里不赘述。</p>
+<h2 id="3">3.创建文件之后，启动服务<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<pre><code>[root@k8s-m2 redis]# docker-compose up -d 
+Creating redis_redis1_1 ... done
+Creating redis_redis5_1 ... done
+Creating redis_redis4_1 ... done
+Creating redis_redis3_1 ... done
+Creating redis_redis6_1 ... done
+Creating redis_redis2_1 ... done 
+[root@k8s-m2 redis]# docker-compose ps 
+     Name                   Command               State   Ports
+---------------------------------------------------------------
+redis_redis1_1   /usr/local/bin/entrypoint. ...   Up           
+redis_redis2_1   /usr/local/bin/entrypoint. ...   Up           
+redis_redis3_1   /usr/local/bin/entrypoint. ...   Up           
+redis_redis4_1   /usr/local/bin/entrypoint. ...   Up           
+redis_redis5_1   /usr/local/bin/entrypoint. ...   Up           
+redis_redis6_1   /usr/local/bin/entrypoint. ...   Up
+</code></pre>
+<p>状态都为Up，说明服务均正常启动，如果有状态不正常的容器，看看自己服务器的端口是不是被占用了。</p>
+<h2 id="4redis-cluster">4.redis-cluster集群配置<a class="headerlink" href="#4redis-cluster" title="Permanent link">&para;</a></h2>
+<p>上述只是启动了6个redis容器，并没有设置集群，随便进入一个redis容器，执行下面的命令，IP替换成自己宿主机的IP</p>
+<pre><code>[root@k8s-m2 redis]# docker exec -ti d3a904cc0d5a bash 
+root@k8s-m2:/data# redis-cli --cluster create 192.168.1.100:7001 192.168.1.100:7002 192.168.1.100:7003 192.168.1.100:7004 192.168.1.100:7005 192.168.1.100:7006 --cluster-replicas 1
+&gt;&gt;&gt; Performing hash slots allocation on 6 nodes...
+Master[0] -&gt; Slots 0 - 5460
+Master[1] -&gt; Slots 5461 - 10922
+Master[2] -&gt; Slots 10923 - 16383
+Adding replica 192.168.1.100:7004 to 192.168.1.100:7001
+Adding replica 192.168.1.100:7005 to 192.168.1.100:7002
+Adding replica 192.168.1.100:7006 to 192.168.1.100:7003
+&gt;&gt;&gt; Trying to optimize slaves allocation for anti-affinity
+[WARNING] Some slaves are in the same host as their master
+M: 7237efa105ff4246c02da08c0e65c18246755f2f 192.168.1.100:7001
+   slots:[0-5460] (5461 slots) master
+M: 241d6eb2abcd9a6d41db5231fcd80fac1d452bee 192.168.1.100:7002
+   slots:[5461-10922] (5462 slots) master
+M: 493083f2733bc181295f5b9a9fa9bc6fdf821958 192.168.1.100:7003
+   slots:[10923-16383] (5461 slots) master
+S: b60ef6cbea0ae06566d17db4a1b4452e56543419 192.168.1.100:7004
+   replicates 241d6eb2abcd9a6d41db5231fcd80fac1d452bee
+S: b48e546e963f694eac91d49b285040bb2bec5513 192.168.1.100:7005
+   replicates 493083f2733bc181295f5b9a9fa9bc6fdf821958
+S: 259de2d6be917e64cdc01604521da45cc1f8d842 192.168.1.100:7006
+   replicates 7237efa105ff4246c02da08c0e65c18246755f2f
+Can I set the above configuration? (type 'yes' to accept): yes
+&gt;&gt;&gt; Nodes configuration updated
+&gt;&gt;&gt; Assign a different config epoch to each node
+&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join
+....
+&gt;&gt;&gt; Performing Cluster Check (using node 192.168.1.100:7001)
+M: 7237efa105ff4246c02da08c0e65c18246755f2f 192.168.1.100:7001
+   slots:[0-5460] (5461 slots) master
+   1 additional replica(s)
+M: 241d6eb2abcd9a6d41db5231fcd80fac1d452bee 192.168.1.100:7002
+   slots:[5461-10922] (5462 slots) master
+   1 additional replica(s)
+M: 493083f2733bc181295f5b9a9fa9bc6fdf821958 192.168.1.100:7003
+   slots:[10923-16383] (5461 slots) master
+   1 additional replica(s)
+S: b60ef6cbea0ae06566d17db4a1b4452e56543419 192.168.1.100:7004
+   slots: (0 slots) slave
+   replicates 241d6eb2abcd9a6d41db5231fcd80fac1d452bee
+S: 259de2d6be917e64cdc01604521da45cc1f8d842 192.168.1.100:7006
+   slots: (0 slots) slave
+   replicates 7237efa105ff4246c02da08c0e65c18246755f2f
+S: b48e546e963f694eac91d49b285040bb2bec5513 192.168.1.100:7005
+   slots: (0 slots) slave
+   replicates 493083f2733bc181295f5b9a9fa9bc6fdf821958
+[OK] All nodes agree about slots configuration.
+&gt;&gt;&gt; Check for open slots...
+&gt;&gt;&gt; Check slots coverage...
+[OK] All 16384 slots covered.
+</code></pre>
+<hr />
+<p>至此，基于docker部署的redis-cluster集群就已经完成</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d6f25eb3.min.js"></script>
+      
+    
+  </body>
+</html>
